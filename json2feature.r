@@ -48,8 +48,7 @@ createLabels <- function(df) {
 ann <- createAnnotations(PfamScan)
 labs <- createLabels(ann)
 # outputs the formated file to STOUT
-write.table(labs, row.names = F, col.names = F, sep = "\t", quote = F)
+write.table(labs, row.names = FALSE, col.names = FALSE, sep = "\t", quote = FALSE)
 cat("\nSTARTGROUP\tJalview\n")
-write.table(ann, row.names = F, col.names = F, sep = "\t", quote = F)
+write.table(ann, row.names = FALSE, col.names = FALSE, sep = "\t", quote = FALSE)
 cat("ENDGROUP\tJalview\n")
-

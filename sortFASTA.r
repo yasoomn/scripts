@@ -1,24 +1,27 @@
 #!/usr/bin/env Rscript
 
+# This script takes a newline separated file of sequence names and used it to 
+# search a FASTA file. It returns the sequences in the order they were in the list in FASTA format.
+# Written by Yasoo Morimoto
+
 library(seqinr)
+library("optparse")
 
-args <- commandArgs(trailingOnly=T)
-# test if there is at least one argument: if not, return an error
-# TODO test if the file is a JSON
-if (length(args)==0) {
-  stop("At least one argument must be supplied (input file).json", call. = FALSE)
-} else {
-	lst <- read.table(args[1])
-	seqs <- read.fasta(file = args[2])
-}
+optionList <- list(
+make_option(c("-v", "--verbose"), action="store_true", default=TRUE,
+help = "Print extra output [default]")
+)
+
+opt <- parse_args(OptionParser(optionList = optionList, 
+															 usage = "usage: %prog [names.lst] [sequences.fasta]"), positional_arguments = 2)
+
+	lst <- read.table(opt$args[1])
+	seqs <- read.fasta(file = opt$args[2])
 
 
-
-
-# seqs["Azfi_s0001.g000030"]
 for (s in 1:nrow(lst)) {
 	#print(s)
 	cat(paste(">", lst[s, 1], "\n", sep = ""), sep = "")
-	cat(paste(toupper(getSequence(seqs[lst[s, 1]], as.string = T)[[1]]), "\n", sep = ""), sep = "")
+	cat(paste(toupper(getSequence(seqs[lst[s, 1]], as.string = TRUE)[[1]]), "\n", sep = ""), sep = "")
 
 }
