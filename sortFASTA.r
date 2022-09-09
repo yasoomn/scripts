@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 
-# This script takes a newline separated file of sequence names and used it to 
+# This script takes a newline separated file of sequence names and used it to
 # search a FASTA file. It returns the sequences in the order they were in the list in FASTA format.
 # Written by Yasoo Morimoto
 
@@ -8,7 +8,7 @@ library(seqinr)
 library("optparse")
 
 optionList <- list(
-make_option(c("-v", "--verbose"), action="store_true", default=TRUE,
+make_option(c("-v", "--verbose"), action = "store_true", default = TRUE,
 help = "Print extra output [default]")
 )
 
