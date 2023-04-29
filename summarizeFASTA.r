@@ -37,7 +37,7 @@ aaORdna <- function(lst) {
 
 searchSequence <- function(sq, searchSeq, strand, name) {
 	# create a string of the sequence
-	# search the string for matches, returns a vecor with starting positions
+	# search the string for matches, returns a vector with starting positions
 	startpos <- unlist(gregexpr(searchSeq, paste(sq, collapse = ""), ignore.case = TRUE))
 	found <- data.frame(Sequence = c(),
 								 Start = c(),
