@@ -11,7 +11,9 @@ if (length(args)==0) {
 #oligo = "AAACTGGACTGGGC"
 
 nAT <- length(grep("A|T", strsplit(oligo, "")[[1]], value = F))
+print(paste("nAT:", nAT))
 nCG <- length(grep("C|G", strsplit(oligo, "")[[1]], value = F))
+print(paste("nCG", nCG))
 
 
 Tm <- (nAT * 2) + (nCG * 4) - 5

@@ -3,36 +3,25 @@
 packages <- c("tidyr", "dplyr")
 
 install.packages(setdiff(packages, rownames(installed.packages())))
-
 suppressPackageStartupMessages({
-
 library(tidyr)
 library(dplyr)
 library(optparse)
 })
 
-
 optionList <- list(make_option(c("-v", "--verbose"), action = "store_true",
 																default = FALSE, help = "Print extra output [default]"),
 make_option(c("-o", "--OD"), action = "store", help = "File containing the table with optical density measurements"),
 make_option(c("-m", "--measurement"), action = "store"),
-make_option(c("-l", "--labels"), action = "store", help = "")
+make_option(c("-l", "--labels"), action = "store", help = ""),
+make_option(c("-f", "--filename"), action = "store", help = "Filename to print the output to. If no filename is provided, output is printed to STDOUT")
 )
 
 opt <- parse_args(OptionParser(option_list = optionList,
 															 usage = "usage: %prog [sequences.fasta]")
 )
 
-#opt <- list()
-#opt$OD <- "./andersonOD.csv"
-#opt$measurement <- "./andersonLux.csv"
-#opt$labels <- "./andersonPlate.csv"
-
-
 # parse OD values
-
-#data <- read.csv("./andersonOD.csv", row.names = 1)
-
 
 elongate_data <- function(csv_path) {
 	# load the file
@@ -56,7 +45,6 @@ elongate_data <- function(csv_path) {
 	data.long
 }
 
-
 long.output <- elongate_data(opt$measurement)
 names(long.output) <- c("time", "temp", "cycle", "well", "measurement")
 
@@ -65,9 +53,6 @@ names(long.output) <- c("time", "temp", "cycle", "well", "measurement")
 	long.output <- long.output %>% 
 		rowwise() %>%
 		mutate(well_x = substr(well, 2, 3), well_y = substr(well, 1, 1))
-
-
-
 
 # add the OD measurement
 
@@ -87,4 +72,4 @@ if (!is.null(opt$labels)) {
 
 }
 
-write.csv(long.output, file = "", row.names = F)
+write.csv(long.output, file = ifelse(is.null(opt$filename), "", opt$filename), row.names = F)

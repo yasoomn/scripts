@@ -82,6 +82,10 @@ if (opt$options$summary) {
 			d <- rbind(d, searchSequence(s, opt$options$match, "Forward"))
 		}
 	}
-	print(d)
+	if (!nrow(d) == 0) {
+		print("wtf")
+		print(opt$options$match)
+		print(d)
+	}
 }
 # ATGATCATGAATGTACTAAATTTGAGCCCTCCGTT
