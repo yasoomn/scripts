@@ -37,8 +37,10 @@ elongate_data <- function(csv_path) {
 
 	# Separate rows with measurements
 	data.values <- data %>% slice_tail(n = nrow(data) - 2) %>% t() %>% as.data.frame()
+	# How many wells were used?
+	wellsN = data %>% slice_tail(n = nrow(data) - 2) %>% nrow()
 	data.values$cycle <- c(1:nrow(data.values))
-	data.values.long <- data.values %>% pivot_longer(cols = 1:96)
+	data.values.long <- data.values %>% pivot_longer(cols = 1:wellsN)
 	
 	# Combine both
 	data.long <- full_join(data.info, data.values.long, by = "cycle") 
@@ -68,8 +70,10 @@ if (!is.null(opt$labels)) {
 	# create a data.frame with the correct dimensions and a well column and add the labels
 	plate_long <- data.frame(well = paste(rep(LETTERS[1:8], each = 12), 1:12, sep = ""), 
 	label = pivot_longer(plate, values_to = "label", cols = 1:12)$label)
+	## Previous inner_join
 	long.output <- inner_join(long.output, plate_long, by = "well")
 
 }
 
-write.csv(long.output, file = ifelse(is.null(opt$filename), "", opt$filename), row.names = F)
+write.csv(long.output %>%  drop_na(time) # remove empty rows
+					, file = ifelse(is.null(opt$filename), "", opt$filename), row.names = F)
